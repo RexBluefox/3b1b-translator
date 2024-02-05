@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="bar">
+            -
+            <div class="marker">s</div>
+        </div>
+        <script>
+            var bar = document.getElementById("bar")
+            fetch("./sentence_translations.json")
+                .then((res) => res.json())
+                .then((json) => {
+                    //console.log(json[0])
+                    for (let s of json){
+                        let m = document.createElement("div")
+                        m.classList.add("marker")
+                        m.textContent = "s"
+                        
+                        let l = s.time_range[0]/json[json.length-1].time_range[1] * 100 + "%"
+                        m.style.left = l
+                        console.log(m.style.left)
+                        /* m.textContent = s.time_range[0]; */
+                        document.getElementById("bar").appendChild(m)
+                    }
+                })
+                .catch((e) => console.error(e));
+            var marker = document.getElementsByClassName("marker")[0]
+            bar.addEventListener("click",(e)=>{
+                let leftS = marker.style.left;
+                let left = leftS.substring(0,leftS.length-2)
+                console.log(left)
+                marker.style.left = `${Number(left) + 10}px`
+            })
+        </script>
+    </body>
+</html>

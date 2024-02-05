@@ -1,0 +1,17 @@
+{{define "dropdown"}}
+<div class="pure-menu pure-menu-horizontal">
+    <ul class="pure-menu-list">
+        <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+            <a href="#" class="pure-menu-link">Courses</a>
+            <ul class="pure-menu-children">
+                {{range .Items}}
+                <li class="pure-menu-item">
+                    <button onclick="window.location.href = 'https://youtube.com'">{{.Content}}</button>
+                    <!-- <a href="#" class="pure-menu-link">{{.Content}}</a> -->
+                </li>
+                {{end}}
+            </ul>
+        </li>
+    </ul>
+</div>
+{{end}}

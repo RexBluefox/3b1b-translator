@@ -1,0 +1,24 @@
+#bar {
+    display: block;
+    width: 100%;
+   /*  width: 800px;; */
+    background-color: red;
+    border-radius: 10px;
+    color:transparent;
+    position:relative;
+    overflow:hidden;
+}
+.marker {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    width: 20px;
+    background-color: blue;
+    /* border-radius: 50%; */
+    color:transparent;
+    transition:left 1s ease-in-out infinite;
+}
+.marker:hover {
+    left: 95%;
+}
