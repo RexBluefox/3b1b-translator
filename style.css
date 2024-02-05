@@ -1,24 +1,78 @@
+body {
+    background-color: #1f1f1f;
+}
 #bar {
     display: block;
-    width: 100%;
-   /*  width: 800px;; */
-    background-color: red;
+    width: 50%;
+    background-color: #0f0f0f;
     border-radius: 10px;
     color:transparent;
     position:relative;
-    overflow:hidden;
+    left:50%;
+    transform:translateX(-50%);
+    top:520px;
 }
 .marker {
-    pointer-events: none;
+    user-select: none;
     position: absolute;
     top: 0;
-    z-index: 2;
     width: 20px;
-    background-color: blue;
-    /* border-radius: 50%; */
+    background-color: #74c1e4;
     color:transparent;
-    transition:left 1s ease-in-out infinite;
 }
 .marker:hover {
-    left: 95%;
+    background-color: #3c6577;
+}
+.marker:hover::before {
+    color:#bfbfbf;
+    top:20px;
+    padding: 10px;
+    position:absolute;
+    display:block;
+    font-family: "Inter";
+    content:attr(data-original);
+    background-color: #1c4a5b;
+    border-radius: 10px;
+}
+.marker.chover {
+    background-color: #3c6577;
+}
+.marker.chover::before {
+    color:#bfbfbf;
+    top:20px;
+    padding: 10px;
+    position:absolute;
+    display:block;
+    font-family: "Inter";
+    content:attr(data-original);
+    background-color: #1c4a5b;
+    border-radius: 10px;
+}
+#player {
+    position:absolute;
+    left:50%;
+    transform: translateX(-50%);
+    width: 225px;
+    height:400px;
+    top:100px;
+    border-radius: 20px;
+    border-color:#1c4a5b;
+    border-style: solid;
+    border-width: 2px;
+}
+#playstate{
+    position: absolute;
+    top: 0;
+    left:0;
+    z-index: 3;
+    width: 5px;
+    background-color: #bfbfbf;
+}
+#title {
+    font-family: "Inter";
+    position:absolute;
+    left:50%;
+    transform:translate(-50%);
+    font-weight: 900;
+    color: #bfbfbf
 }

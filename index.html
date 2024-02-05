@@ -1,39 +1,105 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <div id="bar">
-            -
-            <div class="marker">s</div>
-        </div>
-        <script>
-            var bar = document.getElementById("bar")
-            fetch("./sentence_translations.json")
-                .then((res) => res.json())
-                .then((json) => {
-                    //console.log(json[0])
-                    for (let s of json){
-                        let m = document.createElement("div")
-                        m.classList.add("marker")
-                        m.textContent = "s"
-                        
-                        let l = s.time_range[0]/json[json.length-1].time_range[1] * 100 + "%"
-                        m.style.left = l
-                        console.log(m.style.left)
-                        /* m.textContent = s.time_range[0]; */
-                        document.getElementById("bar").appendChild(m)
-                    }
-                })
-                .catch((e) => console.error(e));
-            var marker = document.getElementsByClassName("marker")[0]
-            bar.addEventListener("click",(e)=>{
-                let leftS = marker.style.left;
-                let left = leftS.substring(0,leftS.length-2)
-                console.log(left)
-                marker.style.left = `${Number(left) + 10}px`
-            })
-        </script>
-    </body>
+
+<head>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Inter">
+
+</head>
+
+<body>
+  <h1 id="title"></h1>
+  <div id="player"></div>
+  <div id="bar">-<span id="playstate">-</span></div>
+  <script>
+    var bar = document.getElementById("bar");
+    var tag = document.createElement("script");
+    var playstate = document.getElementById("playstate");
+    var title = document.getElementById("title")
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    fetch("./sentence_translations.json")
+      .then((res) => res.json())
+      .then((json) => {
+        for (let s of json) {
+          let m = document.createElement("div");
+          m.classList.add("marker");
+          m.textContent = "s";
+          let dur = s.time_range[1] - s.time_range[0];
+          let l =
+            (s.time_range[0] / json[json.length - 1].time_range[1]) * 100 +
+            "%";
+          m.style.left = l;
+          m.style.width =
+            (dur / json[json.length - 1].time_range[1]) * 100 + "%";
+          m.dataset.original = s.input;
+          document.getElementById("bar").appendChild(m);
+        }
+      })
+      .catch((e) => console.error(e));
+    var player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player("player", {
+        height: "360",
+        width: "640",
+        videoId: "xJwkj25fFK4",
+        playerVars: {
+          controls: 0,
+        },
+        events: {
+          onReady: onPlayerReady,
+          //onStateChange: onPlayerStateChange,
+        },
+      });
+    }
+
+    function onPlayerReady(event) {
+      title.textContent = player.videoTitle;
+      console.log(player.videoTitle)
+      setInterval(() => {
+
+        let time = player.getCurrentTime();
+        let dur = player.getDuration();
+        let pos = time / dur;
+        addClosestClass()
+        playstate.style.left = pos * 100 + "%";
+      });
+    }
+
+    // var done = false;
+    // function onPlayerStateChange(event) {
+    //   if (event.data == YT.PlayerState.PLAYING && !done) {
+    //     done = true;
+    //   }
+    // }
+    // function onStateChange(event) {
+    //   console.log(event);
+    // }
+    // function stopVideo() {
+    //   player.stopVideo();
+    // }
+    function addClosestClass() {
+      var bbox = playstate.getBoundingClientRect()
+
+      var closestMarker = null;
+      var minDistanceX = Number.MAX_SAFE_INTEGER;
+
+      document.querySelectorAll('.marker').forEach(function(marker) {
+        var markerB = marker.getBoundingClientRect()
+        if (bbox.left > markerB.left && bbox.right < markerB.right){
+          closestMarker = marker;
+          closestMarker.classList.add('chover');
+        }
+      });
+      document.querySelectorAll('.marker').forEach(function(marker) {
+        if (marker !== closestMarker) {
+          marker.classList.remove('chover');
+        }
+      });
+    }
+  </script>
+</body>
+
 </html>
