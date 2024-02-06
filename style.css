@@ -13,6 +13,7 @@ body {
     top:520px;
 }
 .marker {
+    pointer-events: none;
     user-select: none;
     position: absolute;
     top: 0;
@@ -49,12 +50,12 @@ body {
     border-radius: 10px;
 }
 #player {
-    position:absolute;
+    position: absolute;
     left:50%;
+    top:100px;
     transform: translateX(-50%);
     width: 225px;
     height:400px;
-    top:100px;
     border-radius: 20px;
     border-color:#1c4a5b;
     border-style: solid;
@@ -68,11 +69,32 @@ body {
     width: 5px;
     background-color: #bfbfbf;
 }
+#mousemarker{
+    pointer-events: none;
+    user-select: none;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left:0;
+    z-index: 3;
+    width: 5px;
+    background-color: #8d6135
+}
 #title {
     font-family: "Inter";
     position:absolute;
     left:50%;
     transform:translate(-50%);
     font-weight: 900;
-    color: #bfbfbf
+    color: #bfbfbf;
+    
+}
+#time {
+    font-family: "Inter";
+    position:absolute;
+    left:50%;
+    transform:translate(-50%);
+    font-weight: 900;
+    color: #bfbfbf;
+    top: 505px;
 }
