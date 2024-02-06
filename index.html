@@ -10,16 +10,20 @@
 <body>
   <h1 id="title"></h1>
   <div id="player"></div>
-  <div id="bar">-<span id="playstate">-</span></div>
+  <div id="bar">-<span id="playstate">-</span><span id="mousemarker">-</span></div>
   <script>
     var bar = document.getElementById("bar");
     var tag = document.createElement("script");
     var playstate = document.getElementById("playstate");
+    var mousemarker = document.getElementById("mousemarker")
     var title = document.getElementById("title")
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
+    bar.addEventListener("mousemove",(e)=>{
+      mousemarker.style.left = e.clientX-650;
+      console.log((e.clientX-644)/1271)
+    })
     fetch("./sentence_translations.json")
       .then((res) => res.json())
       .then((json) => {
@@ -67,7 +71,7 @@
         playstate.style.left = pos * 100 + "%";
       });
     }
-
+    
     // var done = false;
     // function onPlayerStateChange(event) {
     //   if (event.data == YT.PlayerState.PLAYING && !done) {
