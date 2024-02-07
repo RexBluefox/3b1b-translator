@@ -2,38 +2,25 @@ package main
 
 import (
 	//"html/template"
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
-
+	"net/http"
+	"strings"
 	//"net/http"
-	"github.com/go-git/go-git/v5"
-	//"github.com/philippta/go-template/html/template"
+	/* "github.com/go-git/go-git/v5" */ //"github.com/philippta/go-template/html/template"
 )
 
-type Todo struct {
-	Title string
-	Done  bool
-}
-type Item struct {
-	Content string
-}
-type TodoPageData struct {
-	PageTitle string
-	Todos     []Todo
-	Items     []Item
-}
-
 func main() {
-	repoURL := "https://github.com/maragudk/gomponents.git"
-	repo, err := git.PlainOpen(repoURL)
-	if err != nil {
-		log.Fatal(err)
+	var jBody []DirItem
+	jBody = getDirContent("https://api.github.com/repos/3b1b/captions/contents/")
+	for i := 0; i < len(jBody); i++ {
+		if jBody[i].Type == "dir" && !strings.HasPrefix(jBody[i].Name, ".") {
+			body := getDirContent(jBody[i].Url)
+			
+		}
 	}
-	/* repoInfo, err := repo.Remotes()
-	if err != nil {
-		log.Fatal(err)
-	} */
-	fmt.Println(repo)
 	/* tmpl := template.Must(template.ParseFiles("layout.html", "dropdown.html"))
 	dropdown := template.Must(template.ParseFiles("dropdown.html"))
 	dropdown.
@@ -57,4 +44,25 @@ func main() {
 }
 func test() {
 	fmt.Println("Test")
+}
+
+func getDirContent(url string) []DirItem {
+	resp, _ := http.Get(url)
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	var jBody []DirItem
+	json.Unmarshal(body, &jBody)
+	return jBody
+}
+func getFileContent(url string) FileItem {
+	resp, _ := http.Get(url)
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	var jBody FileItem
+	json.Unmarshal(body, &jBody)
+	return jBody
 }
