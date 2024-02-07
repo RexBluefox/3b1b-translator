@@ -1,0 +1,48 @@
+body {
+    background-color: #1f1f1f;
+}
+#backbar {
+    position:absolute;
+    width: 300px;
+    height: 10px;
+    background-color: black;
+    color:transparent;
+    user-select: none;
+    outline-style: solid;
+    border-radius: 15px;
+    outline-color: black;
+}
+#frontbar {
+    position:absolute;
+    width: 300px;
+    height: 10px;
+    background-color: red;
+    color:transparent;
+    user-select: none;
+    border-radius: 15px;
+}
+.dot {
+    position:absolute;
+    border-radius: 50%;
+    background-color: red;
+    outline-style: solid;
+    outline-color: black;
+    width: 20px;
+    transform: translateY(-25%);
+}
+#first {
+    left: 100px;
+}
+#second {
+    left: 200px;
+}
+#bar * {
+    color:transparent;
+    user-select: none;
+}
+#bar {
+    position:absolute;
+    width: 400px;
+    top:25%;
+    /* transform: translateY(-50%); */
+}
