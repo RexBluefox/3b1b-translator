@@ -10,19 +10,33 @@
 <body>
   <h1 id="title"></h1>
   <div id="player"></div>
-  <div id="bar">-<span id="playstate">-</span><span id="mousemarker">-</span></div>
+  <div id="bar">
+    -
+    <span id="playstate">-</span>
+    <span id="mousemarker">-</span>
+  </div>
+  <span id ="time"></span>
   <script>
     var bar = document.getElementById("bar");
     var tag = document.createElement("script");
     var playstate = document.getElementById("playstate");
     var mousemarker = document.getElementById("mousemarker")
     var title = document.getElementById("title")
+    var timeTag = document.getElementById("time")
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    bar.addEventListener("mouseenter",(e)=>{
+      mousemarker.style.visibility = "visible";
+    })
+    bar.addEventListener("mouseleave",(e)=>{
+      mousemarker.style.visibility = "hidden";
+    })
     bar.addEventListener("mousemove",(e)=>{
-      mousemarker.style.left = e.clientX-650;
-      console.log((e.clientX-644)/1271)
+      mousemarker.style.left = e.clientX - bar.getBoundingClientRect().left-3 + "px"
+    })
+    bar.addEventListener("click",(e)=>{
+      console.log(e)
     })
     fetch("./sentence_translations.json")
       .then((res) => res.json())
@@ -61,15 +75,20 @@
 
     function onPlayerReady(event) {
       title.textContent = player.videoTitle;
-      console.log(player.videoTitle)
+      //console.log(player.videoTitle)
+      let dur = player.getDuration();
+      console.log(dur)
+      let durminutes = Math.floor(dur/60)
+      let durseconds = Math.floor(dur - durminutes * 60);
       setInterval(() => {
-
         let time = player.getCurrentTime();
-        let dur = player.getDuration();
         let pos = time / dur;
-        addClosestClass()
+        let minutes = Math.floor(time/60);
+        let seconds = Math.floor(time - minutes * 60);
+        timeTag.innerText = minutes + ":" + seconds + "/" + durminutes + ":" + durseconds
         playstate.style.left = pos * 100 + "%";
-      });
+        addClosestClass(playstate)
+      },100);
     }
     
     // var done = false;
@@ -84,8 +103,8 @@
     // function stopVideo() {
     //   player.stopVideo();
     // }
-    function addClosestClass() {
-      var bbox = playstate.getBoundingClientRect()
+    function addClosestClass(original) {
+      var bbox = original.getBoundingClientRect()
 
       var closestMarker = null;
       var minDistanceX = Number.MAX_SAFE_INTEGER;
